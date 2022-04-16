@@ -22,6 +22,10 @@ OPTIONS:
     -V, --version                              Print version information
 ```
 
+## TODO  
+    - [ ] tcp查询  
+    - [ ] doh查询
+
 ## 参考文档
 [rust clap](https://docs.rs/clap/latest/clap/index.html)  
 [making-a-dns-client](https://blog.adamchalmers.com/making-a-dns-client/)  
