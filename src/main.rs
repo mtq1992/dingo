@@ -1,5 +1,7 @@
 use clap::StructOpt;
 use rand::Rng;
+use reqwest::header;
+
 
 use crate::{cli::Cli, message::Message, dns_types::{Class, RecordType}};
 
@@ -23,10 +25,6 @@ fn main() {
     } else {
         panic!("unsupported protocol: {}", args.protocol);
     }
-
-    if verbose {
-        println!("done");
-    }
 }
 
 
@@ -43,5 +41,19 @@ fn udp_client(args: Cli) {
 }
 
 fn doh_client(args: Cli) {
-    panic!("not implemented");
+    let mut headers = header::HeaderMap::new();
+    headers.insert(header::ACCEPT, header::HeaderValue::from_static("application/dns-json"));
+
+    let client = reqwest::blocking::Client::builder().default_headers(headers).build().unwrap();
+
+    let url = format!("{}?name={}&type={}", args.doh_addr.unwrap().as_str(), args.name, args.record_type.to_string());
+
+    println!("url: {}", url);
+    
+    let resp = client.get(&url).send().unwrap();
+
+    let resp_body = resp.text().unwrap();
+
+    println!("{}",resp_body)
 }
+

@@ -3,6 +3,7 @@ use std::net::SocketAddr;
 use clap::Parser;
 
 use reqwest::Url;
+use anyhow::Result;
 
 use crate::dns_types::RecordType;
 
@@ -56,10 +57,6 @@ fn parse_domain_name(s: &str) -> Result<String, String> {
     Ok(s.to_string())
 }
 
-pub enum Protocol {
-    Udp,
-    DoH,
-}
 
 fn parse_protocol(s: &str) -> Result<String, String> {
     let protocol = match s.to_lowercase().as_str() {
