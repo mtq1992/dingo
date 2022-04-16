@@ -23,8 +23,8 @@ OPTIONS:
 ```
 
 ## TODO  
-    - [ ] tcp查询  
-    - [ ] doh查询
+- tcp查询  
+- doh查询
 
 ## 参考文档
 [rust clap](https://docs.rs/clap/latest/clap/index.html)  
