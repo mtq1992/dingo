@@ -2,6 +2,8 @@ use std::net::SocketAddr;
 
 use clap::Parser;
 
+use reqwest::Url;
+
 use crate::dns_types::RecordType;
 
 
@@ -20,17 +22,17 @@ pub struct Cli {
     #[clap(short, long, default_value = "A")]
     pub record_type: RecordType,
     
-    /// 解析记录的服务器地址
-    #[clap(short, long, parse(try_from_str = parse_socket_addr), default_value = "8.8.8.8:53")]
+    /// 解析记录的DNS服务器地址
+    #[clap(short, long, default_value = "8.8.8.8:53", parse(try_from_str = parse_socket_addr))]
     pub domain_resolver: SocketAddr,
     
     /// 解析记录的协议
     #[clap(short, long, default_value = "udp", parse(try_from_str = parse_protocol))]
     pub protocol: String,
 
-    /// doh 地址
-    #[clap(short='s', long, default_value_if("protocol", Some("doh") , Some("https://cloudflare-dns.com/dns-query") ))]
-    pub doh_addr: Option<String>, 
+    /// doh server 地址
+    #[clap(short='s', long, default_value_if("protocol", Some("doh") , Some("https://cloudflare-dns.com/dns-query")), parse(try_from_str = parse_url))]
+    pub doh_addr: Option<Url>, 
 
     /// verbose 模式
     #[clap(short, long)]
@@ -54,12 +56,20 @@ fn parse_domain_name(s: &str) -> Result<String, String> {
     Ok(s.to_string())
 }
 
+pub enum Protocol {
+    Udp,
+    DoH,
+}
+
 fn parse_protocol(s: &str) -> Result<String, String> {
     let protocol = match s.to_lowercase().as_str() {
         "udp" => "udp",
-        "tcp" => "tcp",
         "doh" => "doh",
         _ => return Err(format!("{} is not a valid protocol", s)),
     };  
     Ok(protocol.to_string())
+}
+
+fn parse_url(s: &str) -> Result<Url, String> {
+    s.parse::<Url>().map_err(|e| format!("{}", e))
 }

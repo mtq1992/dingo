@@ -22,8 +22,7 @@ OPTIONS:
     -V, --version                              Print version information
 ```
 
-## TODO  
-- tcp查询  
+## TODO 
 - doh查询
 
 ## 参考文档
