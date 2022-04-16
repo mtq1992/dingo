@@ -10,11 +10,12 @@ use std::{
 /// Returns the binary response.
 pub fn send_req(msg: Message, resolver: SocketAddr, verbose: bool) -> AResult<(Vec<u8>, usize)> {
     // Connect to the DNS resolver
-    let local_addr = "0.0.0.0:0";
+    let local_addr = "0.0.0.0:9001";
+    assert!(resolver.port() != 0);
     let socket = UdpSocket::bind(local_addr).expect("couldn't bind to a local address");
     socket.set_read_timeout(Some(Duration::from_secs(5)))?;
     if verbose {
-        println!("Bound to local {}", socket.local_addr()?);
+        println!("Bind to local {}", socket.local_addr()?);
     }
     socket
         .connect(resolver)
