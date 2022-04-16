@@ -29,3 +29,4 @@ OPTIONS:
 ## 参考文档
 [rust clap](https://docs.rs/clap/latest/clap/index.html)  
 [making-a-dns-client](https://blog.adamchalmers.com/making-a-dns-client/)  
+[cloudflare doh use json](https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/make-api-requests/dns-json/)

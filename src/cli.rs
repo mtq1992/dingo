@@ -25,11 +25,11 @@ pub struct Cli {
     pub domain_resolver: SocketAddr,
     
     /// 解析记录的协议
-    #[clap(short, long, default_value = "udp")]
+    #[clap(short, long, default_value = "udp", parse(try_from_str = parse_protocol))]
     pub protocol: String,
 
     /// doh 地址
-    #[clap(short='s', long, default_value_if("protocol", Some("doh") , Some("https://dns.google.com/resolve") ))]
+    #[clap(short='s', long, default_value_if("protocol", Some("doh") , Some("https://cloudflare-dns.com/dns-query") ))]
     pub doh_addr: Option<String>, 
 
     /// verbose 模式
@@ -47,10 +47,19 @@ fn parse_domain_name(s: &str) -> Result<String, String> {
     if !s.is_ascii() {
         return Err(format!("{} is not ascii", s));
     }
-    // dns协议中域名均以 . 结尾, 
+    // dns协议中域名均以 . 结尾, 如果不以 . 结尾, 则补充 .
     if !s.ends_with('.') {
         s.push_str(".");
     }
     Ok(s.to_string())
 }
 
+fn parse_protocol(s: &str) -> Result<String, String> {
+    let protocol = match s.to_lowercase().as_str() {
+        "udp" => "udp",
+        "tcp" => "tcp",
+        "doh" => "doh",
+        _ => return Err(format!("{} is not a valid protocol", s)),
+    };  
+    Ok(protocol.to_string())
+}
