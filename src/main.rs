@@ -1,7 +1,7 @@
 use clap::StructOpt;
 use rand::Rng;
 use reqwest::header;
-
+use serde_json::Value;
 
 use crate::{cli::Cli, message::Message, dns_types::{Class, RecordType}};
 
@@ -54,6 +54,8 @@ fn doh_client(args: Cli) {
 
     let resp_body = resp.text().unwrap();
 
-    println!("{}",resp_body)
+    let test = serde_json::from_str::<Value>(&resp_body).unwrap();
+
+    println!("{}",serde_json::to_string_pretty(&test).unwrap());
 }
 

@@ -138,6 +138,7 @@ dependencies = [
  "nom",
  "rand",
  "reqwest",
+ "serde_json",
 ]
 
 [[package]]
