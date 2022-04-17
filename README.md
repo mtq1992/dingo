@@ -25,6 +25,11 @@ OPTIONS:
 ## TODO 
 - doh查询
 
+    支持 api 
+    - google: https://dns.google/resolve 
+    - cloudflare: https://cloudflare-dns.com/dns-query
+
+
 ## 参考文档
 [rust clap](https://docs.rs/clap/latest/clap/index.html)  
 [making-a-dns-client](https://blog.adamchalmers.com/making-a-dns-client/)  
